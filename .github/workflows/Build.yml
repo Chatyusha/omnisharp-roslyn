@@ -13,7 +13,7 @@ defaults:
 on:
   push:
     branches:
-      - master
+      - Chatyusha-Patch1
     tags:
       - '*'
   workflow_dispatch:
