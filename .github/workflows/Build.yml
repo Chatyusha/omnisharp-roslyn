@@ -11,7 +11,7 @@ defaults:
   run:
     shell: pwsh
 on:
-  pull_request:
+  push:
     branches:
       - master
     tags:
