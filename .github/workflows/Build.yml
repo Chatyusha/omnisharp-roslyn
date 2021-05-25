@@ -1,7 +1,7 @@
 
 name: 'Build'
 env:
-  DotNetVersion: "6.0.0"
+  DotNetVersion: "6.0.100-preview.3"
   NuGetVersion: "5.9.1"
   MonoVersion: "6.12.0"
   Artifacts: ${{ github.workspace }}/artifacts/
