@@ -19,7 +19,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: macos-11.0
+    runs-on: macos-10.15
     strategy:
       fail-fast: false
     name: 'Build'
