@@ -1,9 +1,8 @@
 
 name: 'Build'
 env:
-  DotNetVersion: "5.0.104"
-  DotNetVersion2: "3.1.407"
-  NuGetVersion: "5.7.0"
+  DotNetVersion: "6.0.0"
+  NuGetVersion: "5.9.1"
   MonoVersion: "6.12.0"
   Artifacts: ${{ github.workspace }}/artifacts/
   Coverage: ${{ github.workspace }}/coverage/
@@ -20,11 +19,9 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-11.0
     strategy:
       fail-fast: false
-      matrix:
-        os: [ubuntu-18.04, windows-2019, macos-10.15]
     name: 'Build'
     steps:
       - name: Checkout
@@ -46,18 +43,8 @@ jobs:
         with:
           nuget-version: ${{ env.NuGetVersion }}
 
-      - name: 🔨 Use .NET Core 2.1 SDK
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: '2.1.x'
-
-      - name: 🔨 Use .NET Core ${{ env.DotNetVersion2 }} SDK
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: ${{ env.DotNetVersion2 }}
-
       - name: 🔨 Use .NET Core ${{ env.DotNetVersion }} SDK
-        uses: actions/setup-dotnet@v1.7.2
+        uses: actions/setup-dotnet@v1.8.0
         with:
           dotnet-version: ${{ env.DotNetVersion }}
 
@@ -75,18 +62,11 @@ jobs:
       #     dotnet cake --configuration=Release --verbosity=Verbose --target=CI --publish-all --archive
 
       - name: 🍰 Run Cake
-        if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
         shell: bash
         run: |
           echo $PATH
           chmod 755 ./build.sh
           ./build.sh --configuration Release --verbosity Verbose --target CI --publish-all --archive
-
-      - name: 🍰 Run Cake
-        if: ${{ runner.os == 'Windows' }}
-        shell: powershell
-        run: |
-          .\build.ps1 -configuration Release -verbosity Verbose -target CI --publish-all --archive
 
       - name: ⬆ Publish Logs
         uses: actions/upload-artifact@v2
@@ -125,5 +105,5 @@ jobs:
         continue-on-error: true
         if: ${{ always() }}
         with:
-          name: 'scripts - ${{ matrix.os }}'
+          name: 'scripts - macos-11.0'
           path: '${{ env.Artifacts }}/scripts/'
